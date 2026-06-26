@@ -1,2 +1,10 @@
 syntax = "proto3";
-package blockchain;
+package acl.rpc;
+
+import "common.proto";
+import "google/protobuf/empty.proto";
+
+service Status {
+  rpc Up(google.protobuf.Empty) returns (acl.rpc.StatusInfo);
+}
+

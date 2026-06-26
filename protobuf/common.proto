@@ -1,2 +1,87 @@
 syntax = "proto3";
-package blockchain;
+package acl.rpc;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+message ErrorObject {
+    int32 code = 1;
+    string detail = 2;
+}
+
+message StatusInfo
+{
+    string id = 1;
+    string key = 2;
+    string hostname = 3;
+    string ip = 4;
+    string branch = 5;
+    string commit = 6;
+    string org_name = 7;
+    string org_domain = 8;
+    google.protobuf.Timestamp up_time = 9;
+    google.protobuf.Timestamp node_time = 10;
+}
+
+message IdentityObject
+{
+    uint64 id = 1;
+    string email = 2;
+    string key = 3;
+    string key_algo = 4;
+    int32 issue_version = 5;
+    int32 issue_nonce = 6;
+    google.protobuf.Timestamp issue_ts = 7;
+    string sig = 8;
+    string sig_hash = 9;
+    string sig_hash_algo = 10;
+
+    repeated WalletObject wallets = 11;
+}
+
+
+message WalletObject
+{
+    uint64 id = 1;
+    string key = 2;
+    string type = 3;
+    google.protobuf.Timestamp issue_ts = 4;
+    string sig = 8;
+    string sig_hash = 9;
+    string sig_hash_algo = 10;
+}
+
+
+message DomainObject
+{
+    uint64 id = 1;
+    string short_name = 2;
+    string long_name = 3;
+    repeated string urls = 4;
+    repeated ChainObject chains = 5;
+}
+
+message ChainObject
+{
+    uint64 id = 1;
+    repeated BlockObject blocks;
+}
+
+message BlockObject
+{
+    uint64 id = 1;
+    repeated TransactionObject transactions = 2;
+}
+
+message TransactionObject
+{
+    uint64 id = 1;
+    uint64 amount = 2;
+    IdentityObject sender = 3;
+    IdentityObject receiver = 4;
+    google.protobuf.Timestamp issue_ts = 5;
+    google.protobuf.Timestamp confirmed_ts = 6;
+    string sig = 7;
+    string sig_hash = 8;
+    string sig_hash_algo = 9;
+}

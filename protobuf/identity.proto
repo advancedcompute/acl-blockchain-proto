@@ -1,2 +1,32 @@
 syntax = "proto3";
-package blockchain;
+package acl.rpc;
+
+import "common.proto";
+import "google/protobuf/timestamp.proto";
+
+service Identity {
+    rpc Issue(acl.rpc.IdentityIssueRequest) returns (acl.rpc.IdentityIssueResponse);
+    rpc Revoke(acl.rpc.IdentityRevokeRequest) returns (acl.rpc.IdentityRevokeResponse);
+}
+
+message IdentityIssueRequest
+{
+    repeated IdentityObject identities = 1;
+}
+
+message IdentityIssueResponse
+{
+    bool success = 1;
+    optional repeated ErrorObject = 2;
+}
+
+message IdentityRevokeRequest
+{
+    repeated IdentityObject identities = 1;
+}
+
+message IdentityRevokeResponse
+{
+    bool success = 1;
+    optional repeated ErrorObject = 2;
+}
