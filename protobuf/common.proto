@@ -64,7 +64,7 @@ message DomainObject
 message ChainObject
 {
     uint64 id = 1;
-    repeated BlockObject blocks;
+    repeated BlockObject blocks = 2;
 }
 
 message BlockObject

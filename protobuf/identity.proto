@@ -17,7 +17,7 @@ message IdentityIssueRequest
 message IdentityIssueResponse
 {
     bool success = 1;
-    optional repeated ErrorObject = 2;
+    repeated ErrorObject errors = 2;
 }
 
 message IdentityRevokeRequest
@@ -28,5 +28,5 @@ message IdentityRevokeRequest
 message IdentityRevokeResponse
 {
     bool success = 1;
-    optional repeated ErrorObject = 2;
+    repeated ErrorObject errors = 2;
 }
