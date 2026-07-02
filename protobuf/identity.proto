@@ -1,32 +1,111 @@
 syntax = "proto3";
-package acl.rpc;
+package acl.rpc.v1;
 
 import "common.proto";
 import "google/protobuf/timestamp.proto";
 
-service Identity {
-    rpc Issue(acl.rpc.IdentityIssueRequest) returns (acl.rpc.IdentityIssueResponse);
-    rpc Revoke(acl.rpc.IdentityRevokeRequest) returns (acl.rpc.IdentityRevokeResponse);
+option cc_enable_arenas = true;
+
+service IdentityService
+{
+    rpc RegisterIdentity(RegisterIdentityRequest)
+        returns (RegisterIdentityResponse);
+
+    rpc GetIdentity(GetIdentityRequest)
+        returns (Identity);
+
+    rpc UpdateIdentity(UpdateIdentityRequest)
+        returns (Identity);
+
+    rpc ListIdentities(ListIdentitiesRequest)
+        returns (ListIdentitiesResponse);
+
+    rpc VerifyIdentity(VerifyIdentityRequest)
+        returns (VerifyIdentityResponse);
+
+    rpc RevokeIdentity(RevokeIdentityRequest)
+        returns (RevokeIdentityResponse);
 }
 
-message IdentityIssueRequest
+enum IdentityType
 {
-    repeated IdentityObject identities = 1;
+    PERSON = 0;
+    COMPANY = 1;
+    VALIDATOR = 2;
+    SERVICE = 3;
+    ORACLE = 4;
+    DAO = 5;
 }
 
-message IdentityIssueResponse
+message Identity
 {
-    bool success = 1;
+    string identity_id = 1;
+    IdentityType type = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string email_address = 5;
+    bytes public_key = 6;
+    bool verified = 7;
+    bool active = 8;
+    uint64 created_at = 9;
+    map<string,string> metadata = 10;
+}
+
+message RegisterIdentityRequest
+{
+    IdentityType type = 1;
+    string first_name = 2;
+    string last_name = 3;
+    google.protobuf.Timestamp dob = 4;
+    bytes public_key = 7;
+    map<string,string> metadata = 8;
+}
+
+message RegisterIdentityResponse
+{
+    Identity identity = 1;
     repeated ErrorObject errors = 2;
 }
 
-message IdentityRevokeRequest
+message GetIdentityRequest
 {
-    repeated IdentityObject identities = 1;
+    string identity_id = 1;
 }
 
-message IdentityRevokeResponse
+message UpdateIdentityRequest
+{
+    Identity identity = 1;
+    repeated ErrorObject errors = 2;
+}
+
+message ListIdentitiesRequest
+{
+    uint32 page_size = 1;
+    string page_token = 2;
+}
+
+message ListIdentitiesResponse
+{
+    repeated Identity identities = 1;
+    string next_page_token = 2;
+}
+
+message VerifyIdentityRequest
+{
+    string identity_id = 1;
+}
+
+message VerifyIdentityResponse
+{
+    bool verified = 1;
+}
+
+message RevokeIdentityRequest
+{
+    string identity_id = 1;
+}
+
+message RevokeIdentityResponse
 {
     bool success = 1;
-    repeated ErrorObject errors = 2;
 }

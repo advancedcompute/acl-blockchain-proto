@@ -1,10 +1,23 @@
 syntax = "proto3";
-package acl.rpc;
+package acl.rpc.v1;
 
-import "common.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 service Status {
-  rpc Up(google.protobuf.Empty) returns (acl.rpc.StatusInfo);
+  rpc Up(google.protobuf.Empty) returns (acl.rpc.v1.StatusInfo);
 }
 
+message StatusInfo
+{
+    string id = 1;
+    string key = 2;
+    string hostname = 3;
+    string ip = 4;
+    string branch = 5;
+    string commit = 6;
+    string org_name = 7;
+    string org_domain = 8;
+    google.protobuf.Timestamp up_time = 9;
+    google.protobuf.Timestamp node_time = 10;
+}

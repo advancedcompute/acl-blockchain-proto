@@ -1,12 +1,74 @@
 syntax = "proto3";
-package acl.rpc;
+package acl.rpc.v1;
 
-import "common.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 
 service WalletService {
-    
+    /*
+    rpc CreateWallet(CreateWalletRequest)
+        returns (Wallet);
+
+    rpc GetWallet(GetWalletRequest)
+        returns (Wallet);
+
+    rpc ListWallets(ListWalletsRequest)
+        returns (ListWalletsResponse);
+
+    rpc CreateTransfer(CreateTransferRequest)
+        returns (Transfer);
+
+    rpc SubmitSignature(SubmitSignatureRequest)
+        returns (Transfer);
+    rpc GetBalance(GetBalanceRequest)
+        returns (Balance);
+
+    rpc FreezeWallet(FreezeWalletRequest)
+        returns (Wallet);
+
+    rpc UnfreezeWallet(UnfreezeWalletRequest)
+        returns (Wallet);
+    */
 }
 
+enum WalletType {
+    SINGLE_SIG = 0;
+    MULTI_SIG = 1;
+    TREASURY = 2;
+    ESCROW = 3;
+    CONTRACT = 4;
+}
+
+message WalletKey {
+    string key_id = 1;
+    bytes public_key = 2;
+    uint32 weight = 3;
+    bool active = 4;
+}
+
+message Wallet {
+    string wallet_id = 1;
+    string identity_id = 2;
+    WalletType wallet_type = 3;
+    repeated WalletKey keys = 4;
+    uint32 threshold = 5;
+    bool frozen = 6;
+    map<string,string> metadata = 7;
+}
+
+message Balance {
+    string wallet_id = 1;
+    string token_id = 2;
+    uint64 amount = 3;
+}
+
+message Transfer {
+    string transfer_id = 1;
+    string source_wallet = 2;
+    string destination_wallet = 3;
+    string token_id = 4;
+    uint64 amount = 5;
+    repeated bytes signatures = 6;
+    bool executed = 7;
+}

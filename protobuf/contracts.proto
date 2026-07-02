@@ -1,5 +1,5 @@
 syntax = "proto3";
-package acl.rpc;
+package acl.rpc.v1;
 
 import "common.proto";
 import "google/protobuf/empty.proto";
